@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a1b35">
+<title>سؤال ثقيل</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1a1b35; --navy-2:#2a2c52; --bg:#ebe8f5; --card:#ffffff;
+  --muted:#7b7a96; --line:#dcd8ec; --accent:#7c5cff; --accent-soft:#e6e0ff;
+  --good:#22a06b; --warn:#e5a100; --radius:20px;
+  --shadow:0 8px 24px rgba(26,27,53,.10);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);font-family:'Cairo',system-ui,sans-serif;color:var(--navy)}
+body{display:flex;justify-content:center}
+button{font-family:inherit;cursor:pointer;border:0}
+input,textarea{font-family:inherit}
+#app{width:100%;max-width:480px;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;padding:18px 18px calc(18px + env(safe-area-inset-bottom))}
+.screen{display:flex;flex-direction:column;flex:1;animation:in .28s ease}
+@keyframes in{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.brand{text-align:center;margin:6px 0 14px}
+.brand h1{margin:0;font-size:34px;font-weight:900;letter-spacing:-.5px}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:14px;font-weight:600}
+
+.tabs{display:flex;gap:6px;background:#dcd7f0;padding:5px;border-radius:999px;margin-bottom:16px}
+.tab{flex:1;padding:9px 4px;border-radius:999px;background:transparent;color:var(--muted);font-weight:700;font-size:14px;transition:.2s}
+.tab.active{background:var(--navy);color:#fff;box-shadow:0 4px 10px rgba(26,27,53,.25)}
+
+.card{background:var(--card);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow);margin-bottom:14px}
+.card h3{margin:0 0 4px;font-size:16px;font-weight:800}
+.card .hint{margin:0 0 12px;color:var(--muted);font-size:13px;font-weight:600}
+.rule{font-size:13.5px;line-height:1.9;color:#47466a;font-weight:600}
+.rule b{color:var(--navy)}
+
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.stepper{display:flex;align-items:center;gap:14px}
+.stepper button{width:40px;height:40px;border-radius:14px;background:var(--navy);color:#fff;font-size:22px;font-weight:700;line-height:1}
+.stepper button:disabled{opacity:.3}
+.stepper span{min-width:28px;text-align:center;font-size:22px;font-weight:900}
+
+.pname{display:flex;align-items:center;gap:10px;margin-top:10px}
+.pname .num{width:34px;height:34px;border-radius:12px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:900;flex:none}
+.pname input{flex:1;border:2px solid var(--line);border-radius:14px;padding:11px 14px;font-size:16px;font-weight:600;color:var(--navy);background:#faf9ff;outline:none;transition:.2s;min-width:0}
+.pname input:focus{border-color:var(--accent);background:#fff}
+
+.pills{display:flex;flex-wrap:wrap;gap:8px}
+.pill{flex:1;min-width:58px;padding:11px 8px;border-radius:14px;background:#f1effa;color:var(--navy);font-weight:800;font-size:16px;transition:.2s;border:2px solid transparent}
+.pill.active{background:var(--navy);color:#fff}
+
+.switch{position:relative;width:54px;height:30px;border-radius:999px;background:#cfcbe4;transition:.2s;flex:none}
+.switch::after{content:"";position:absolute;top:3px;right:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.2s;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.switch.on{background:var(--navy)}
+.switch.on::after{right:27px}
+
+.teambtns{display:flex;gap:6px}
+.teambtns button{padding:8px 12px;border-radius:12px;background:#f1effa;font-weight:800;font-size:13px;color:var(--navy)}
+.teambtns button.a.active{background:#e8475f;color:#fff}
+.teambtns button.b.active{background:#2d7be5;color:#fff}
+
+.spacer{flex:1}
+.btn{width:100%;padding:16px;border-radius:18px;font-size:18px;font-weight:900;background:var(--navy);color:#fff;box-shadow:0 10px 20px rgba(26,27,53,.28);transition:transform .1s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.35;box-shadow:none}
+.btn.ghost{background:transparent;color:var(--navy);box-shadow:none;border:2px solid var(--navy);font-size:16px;padding:13px}
+.btn.soft{background:#dcd7f0;color:var(--navy);box-shadow:none;font-size:16px;padding:14px}
+.btns{display:flex;gap:10px}
+.btns .btn{flex:1}
+.bottom{position:sticky;bottom:0;padding-top:10px;background:linear-gradient(transparent,var(--bg) 30%)}
+
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;font-weight:800;font-size:14px;color:var(--muted)}
+.dots{display:flex;gap:5px}
+.dots i{width:22px;height:6px;border-radius:9px;background:#d1cde6}
+.dots i.done{background:var(--navy)}
+.dots i.cur{background:var(--accent)}
+.chip{background:var(--accent-soft);color:var(--accent);padding:4px 12px;border-radius:999px;font-size:12px;font-weight:800}
+.chip.heavy{background:#ffe3e3;color:#d33}
+
+.qcard{background:var(--navy);color:#fff;border-radius:26px;padding:26px 20px;text-align:center;font-size:22px;font-weight:800;line-height:1.7;box-shadow:0 14px 30px rgba(26,27,53,.3);margin-bottom:16px}
+.qcard.small{font-size:17px;padding:18px}
+
+.center{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;flex:1;gap:14px}
+.big-emoji{font-size:72px;line-height:1}
+.pass-name{font-size:34px;font-weight:900}
+.muted{color:var(--muted);font-weight:600;font-size:15px}
+
+textarea{width:100%;min-height:140px;border:2px solid var(--line);border-radius:18px;padding:14px;font-size:18px;font-weight:600;resize:none;outline:none;background:#fff;color:var(--navy);line-height:1.7}
+textarea:focus{border-color:var(--accent)}
+.counter{text-align:left;color:var(--muted);font-size:12px;margin:4px 4px 12px;font-weight:700}
+.timer{height:8px;border-radius:99px;background:#d9d5ec;overflow:hidden;margin-bottom:6px}
+.timer>div{height:100%;background:var(--accent);transition:width 1s linear}
+.timer.low>div{background:#e5484d}
+.timer-t{text-align:center;font-weight:900;margin-bottom:10px}
+
+.opt{width:100%;text-align:right;background:#fff;border:2px solid var(--line);border-radius:18px;padding:15px 16px;margin-bottom:10px;font-size:17px;font-weight:700;color:var(--navy);line-height:1.7;transition:.15s;display:block;position:relative}
+.opt.sel{border-color:var(--navy);background:var(--accent-soft)}
+.opt.own{opacity:.45;cursor:not-allowed;background:#f1effa}
+.opt .tag{position:absolute;left:12px;top:12px;font-size:11px;background:var(--navy);color:#fff;padding:2px 9px;border-radius:99px}
+
+.res{background:#fff;border-radius:18px;padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);border:2px solid transparent}
+.res.top{border-color:var(--warn);background:#fffbef}
+.res .txt{font-size:17px;font-weight:700;line-height:1.7}
+.res .meta{display:flex;justify-content:space-between;margin-top:8px;font-size:13.5px;font-weight:800;color:var(--muted)}
+.res .pts{color:var(--good)}
+.res.skip{opacity:.6}
+
+.score{display:flex;align-items:center;gap:12px;background:#fff;border-radius:16px;padding:12px 14px;margin-bottom:8px;box-shadow:var(--shadow)}
+.score .rk{width:32px;height:32px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:900}
+.score .nm{flex:1;font-weight:800;font-size:16px}
+.score .sc{font-weight:900;font-size:20px}
+.score.first{background:var(--navy);color:#fff}
+.score.first .rk{background:var(--warn);color:var(--navy)}
+.tdot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-left:6px}
+.tdot.a{background:#e8475f}.tdot.b{background:#2d7be5}
+
+.teamscore{display:flex;gap:10px;margin-bottom:12px}
+.teamscore div{flex:1;border-radius:18px;padding:14px;text-align:center;color:#fff;font-weight:800}
+.teamscore .a{background:#e8475f}.teamscore .b{background:#2d7be5}
+.teamscore b{display:block;font-size:30px;font-weight:900}
+
+.hist-q{font-weight:800;font-size:14px;margin:0 0 8px;color:var(--navy)}
+.hist-a{display:flex;justify-content:space-between;gap:8px;font-size:14px;padding:6px 0;border-top:1px dashed var(--line);font-weight:600}
+.hist-a small{color:var(--muted);white-space:nowrap}
+.winner-crown{font-size:84px;text-align:center;animation:pop .6s ease}
+@keyframes pop{0%{transform:scale(0) rotate(-20deg)}70%{transform:scale(1.2)}100%{transform:scale(1)}}
+.h2{font-size:26px;font-weight:900;margin:0;text-align:center}
+.empty{text-align:center;color:var(--muted);padding:26px 0;font-weight:700}
+.link{background:none;color:#d33;font-weight:800;font-size:13px;padding:6px;margin-top:6px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+
+<script>
+/* ============ Utilities ============ */
+const $app = document.getElementById('app');
+const AR = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle = a => { a = a.slice(); for (let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+
+/* ============ Questions ============ */
+const LIGHT = [
+  "إيه أغرب أكلة جربتها وعجبتك؟",
+  "لو هتعيش في أي مدينة في العالم، هتختار إيه ولية؟",
+  "إيه أكتر حاجة بتضيّع وقتك في اليوم؟",
+  "لو معاك يوم إجازة زيادة في الأسبوع، هتعمل فيه إيه؟",
+  "إيه أسوأ هدية ممكن حد يديهالك؟",
+  "لو هتختار قوة خارقة واحدة، هتبقى إيه؟",
+  "إيه الأكلة اللي ممكن تاكلها كل يوم ومتزهقش؟",
+  "إيه أكتر حاجة بتخليك تضحك غصب عنك؟",
+  "لو هتسمّي ابن أو بنت لصاحبك بعد حاجة غريبة، هتسميه إيه؟",
+  "إيه أحسن نصيحة سمعتها في حياتك؟",
+  "إيه الحاجة اللي كل الناس بتحبها وانت مش فاهم ليه؟",
+  "لو هتمسح تطبيق واحد من موبايلك للأبد، هيبقى إيه؟",
+  "إيه أحسن رحلة سافرتها وليه؟",
+  "إيه الاختراع اللي نفسك حد يخترعه بكرة؟",
+  "لو هتكتب عنوان لحياتك كأنها فيلم، هيبقى إيه؟"
+];
+const HEAVY = [
+  "إيه القرار اللي ندمت عليه ومكنتش هتغيره لو رجع بيك الزمن؟",
+  "إيه الحاجة اللي بتخاف الناس تعرفها عنك؟",
+  "لو هتقول جملة واحدة لنفسك وانت عندك ١٦ سنة، هتقول إيه؟",
+  "إيه أكتر حاجة بتخليك تحس إنك اتغيّرت للأحسن؟",
+  "إمتى آخر مرة اتضايقت من نفسك، وليه؟",
+  "إيه الحاجة اللي مهما عملت مش قادر تسامح نفسك عليها؟",
+  "لو هتختار بين النجاح والسعادة، هتختار إيه وليه؟",
+  "إيه الحاجة اللي بتتمنى أهلك يفهموها عنك؟",
+  "إيه أكتر صفة فيك بتتعبك وبتتعب اللي حواليك؟",
+  "إيه الحاجة اللي فقدتها وعرفت قيمتها بعد ما راحت؟",
+  "لو هتعتذر لشخص واحد دلوقتي، مين هو وهتقوله إيه؟",
+  "إيه أكتر كدبة بتقولها لنفسك كل يوم؟",
+  "إيه المعنى الحقيقي للنجاح بالنسبة لك؟",
+  "إيه الحاجة اللي لو عرفت إنك مش هتفشل فيها، كنت هتعملها فورًا؟",
+  "إيه أصعب حاجة اتعلمتها من الحياة لحد دلوقتي؟",
+  "إيه أكتر لحظة حسيت فيها إنك فخور بنفسك؟",
+  "لو هتختار صاحب واحد يفضل معاك العمر كله، إيه الصفة اللي لازم تبقى فيه؟",
+  "إيه الحاجة اللي بتخاف منها في المستقبل؟",
+  "إيه الحاجة اللي الفلوس مش هتقدر تشتريها وبتتمناها؟",
+  "لو هتسيب رسالة واحدة للأجيال الجاية، هتكتب إيه؟"
+];
+
+/* ============ State ============ */
+const G = {
+  tab: 'talk',
+  count: 3,
+  names: ['', '', ''],
+  teamsOn: false,
+  teams: [0, 1, 0],
+  rounds: 5,
+  level: 'all',      // all | heavy
+  timer: 0,          // seconds, 0 = off
+  bonus: true,
+  // runtime
+  players: [], questions: [], r: 0, scores: [], answers: [], order: [], votes: {}, log: []
+};
+let timerId = null;
+
+/* ============ Rendering helpers ============ */
+const show = html => { clearTimer(); $app.innerHTML = `<div class="screen">${html}</div>`; window.scrollTo(0,0); };
+const clearTimer = () => { if (timerId) { clearInterval(timerId); timerId = null; } };
+const getHist = () => { try { return JSON.parse(localStorage.getItem('soal_hist') || '[]'); } catch { return []; } };
+const saveHist = h => { try { localStorage.setItem('soal_hist', JSON.stringify(h.slice(0, 80))); } catch {} };
+const pName = i => G.players[i].name;
+const teamDot = i => G.teamsOn ? `<span class="tdot ${G.players[i].team ? 'b' : 'a'}"></span>` : '';
+
+/* ============ Setup Screen ============ */
+function setCount(n) {
+  n = Math.max(2, Math.min(10, n));
+  while (G.names.length < n) { G.names.push(''); G.teams.push(G.names.length % 2 ? 0 : 1); }
+  G.names.length = n; G.teams.length = n; G.count = n;
+  renderSetup();
+}
+function tabsHtml() {
+  const t = [['talk','نقاش'],['challenge','تحدّي'],['teams','فرق'],['answers','إجابات']];
+  return `<div class="tabs">${t.map(([k,l]) => `<button class="tab ${G.tab===k?'active':''}" onclick="G.tab='${k}';renderSetup()">${l}</button>`).join('')}</div>`;
+}
+function panelTalk() {
+  const pills = (arr, cur, fn) => arr.map(([v,l]) => `<button class="pill ${cur===v?'active':''}" onclick="${fn}">${l}</button>`);
+  return `
+  <div class="card">
+    <h3>كيف تلعب؟</h3>
+    <div class="rule"><b>١.</b> يظهر سؤال، وكل لاعب يكتب إجابته <b>في سرّه</b> (ويقدر يتخطى لو مش عارف).<br>
+    <b>٢.</b> تظهر كل الإجابات بدون أسماء.<br>
+    <b>٣.</b> كل لاعب يصوّت لأفضل إجابة — <b>ماعدا إجابته</b>.<br>
+    <b>٤.</b> كل صوت = <b>نقطة</b> لصاحب الإجابة.</div>
+  </div>
+  <div class="card">
+    <div class="row"><div><h3>عدد اللاعبين</h3><p class="hint" style="margin:0">من ٢ إلى ١٠ لاعبين</p></div>
+      <div class="stepper"><button onclick="setCount(G.count-1)" ${G.count<=2?'disabled':''}>−</button><span>${AR(G.count)}</span><button onclick="setCount(G.count+1)" ${G.count>=10?'disabled':''}>+</button></div></div>
+    ${G.names.map((n,i)=>`<div class="pname"><div class="num">${AR(i+1)}</div><input type="text" maxlength="14" value="${esc(n)}" placeholder="لاعب ${AR(i+1)}" oninput="G.names[${i}]=this.value"></div>`).join('')}
+  </div>
+  <div class="card">
+    <h3>عدد الجولات</h3><p class="hint">كل جولة سؤال جديد</p>
+    <div class="pills">${[3,5,8,10].map(n=>`<button class="pill ${G.rounds===n?'active':''}" onclick="G.rounds=${n};renderSetup()">${AR(n)}</button>`).join('')}</div>
+  </div>
+  <div class="card">
+    <h3>مستوى الأسئلة</h3><p class="hint">اختار مدى عمق الأسئلة</p>
+    <div class="pills">
+      <button class="pill ${G.level==='all'?'active':''}" onclick="G.level='all';renderSetup()">الكل</button>
+      <button class="pill ${G.level==='heavy'?'active':''}" onclick="G.level='heavy';renderSetup()">ثقيل بس 🔥</button>
+    </div>
+  </div>`;
+}
+function panelChallenge() {
+  return `
+  <div class="card">
+    <h3>وقت الكتابة</h3><p class="hint">كل لاعب عنده وقت محدد ليكتب إجابته</p>
+    <div class="pills">${[[0,'بدون'],[30,'٣٠ ث'],[60,'٦٠ ث'],[90,'٩٠ ث']].map(([v,l])=>`<button class="pill ${G.timer===v?'active':''}" onclick="G.timer=${v};renderSetup()">${l}</button>`).join('')}</div>
+  </div>
+  <div class="card">
+    <div class="row"><div><h3>نقطة المركز الأول</h3><p class="hint" style="margin:0">نقطة إضافية لأفضل إجابة في كل جولة</p></div>
+      <button class="switch ${G.bonus?'on':''}" onclick="G.bonus=!G.bonus;renderSetup()" aria-label="تبديل"></button></div>
+  </div>`;
+}
+function panelTeams() {
+  return `
+  <div class="card">
+    <div class="row"><div><h3>اللعب بالفرق</h3><p class="hint" style="margin:0">تُجمع نقاط اللاعبين لكل فريق</p></div>
+      <button class="switch ${G.teamsOn?'on':''}" onclick="G.teamsOn=!G.teamsOn;renderSetup()" aria-label="تبديل"></button></div>
+  </div>
+  ${G.teamsOn ? `<div class="card"><h3>توزيع اللاعبين</h3><p class="hint">اختار فريق كل لاعب</p>
+    ${G.names.map((n,i)=>`<div class="pname"><div class="num">${AR(i+1)}</div>
+      <div style="flex:1;font-weight:800">${esc(n.trim()||'لاعب '+AR(i+1))}</div>
+      <div class="teambtns"><button class="a ${G.teams[i]===0?'active':''}" onclick="G.teams[${i}]=0;renderSetup()">الأحمر</button><button class="b ${G.teams[i]===1?'active':''}" onclick="G.teams[${i}]=1;renderSetup()">الأزرق</button></div></div>`).join('')}
+  </div>` : `<div class="empty">فعّل اللعب بالفرق لتوزيع اللاعبين 👥</div>`}`;
+}
+function panelAnswers() {
+  const h = getHist();
+  if (!h.length) return `<div class="empty">لا توجد إجابات بعد.<br>العب أول لعبة وستظهر إجاباتك هنا 📝</div>`;
+  return h.map(e => `<div class="card"><p class="hist-q">${esc(e.q)}</p>${e.a.map(a=>`<div class="hist-a"><span>${esc(a.t)}</span><small>${esc(a.n)} · ${AR(a.v)} ${a.v===1?'صوت':'أصوات'}</small></div>`).join('')}</div>`).join('')
+    + `<div style="text-align:center"><button class="link" onclick="if(confirm('مسح كل الإجابات المحفوظة؟')){saveHist([]);renderSetup();}">مسح السجل</button></div>`;
+}
+function renderSetup() {
+  const panel = {talk:panelTalk, challenge:panelChallenge, teams:panelTeams, answers:panelAnswers}[G.tab]();
+  show(`
+    <div class="brand"><h1>سؤال ثقيل</h1><p>اكتب وصوّت 🗳️</p></div>
+    ${tabsHtml()}
+    ${panel}
+    <div class="spacer"></div>
+    <div class="bottom"><button class="btn" onclick="startGame()">أبدأ اللعب</button></div>`);
+}
+
+/* ============ Game flow ============ */
+function startGame() {
+  G.players = G.names.map((n,i) => ({ name: n.trim() || 'لاعب ' + AR(i+1), team: G.teams[i] }));
+  const pool = G.level === 'heavy' ? HEAVY.map(q=>({q,h:1})) : LIGHT.map(q=>({q,h:0})).concat(HEAVY.map(q=>({q,h:1})));
+  G.questions = shuffle(pool).slice(0, G.rounds);
+  G.scores = G.players.map(() => 0);
+  G.r = 0; G.log = [];
+  startRound();
+}
+function topbar() {
+  const dots = G.questions.map((_,i)=>`<i class="${i<G.r?'done':i===G.r?'cur':''}"></i>`).join('');
+  const q = G.questions[G.r];
+  return `<div class="topbar"><span>الجولة ${AR(G.r+1)} / ${AR(G.rounds)}</span><div class="dots">${dots}</div><span class="chip ${q.h?'heavy':''}">${q.h?'ثقيل':'خفيف'}</span></div>`;
+}
+function startRound() {
+  G.answers = []; G.votes = {}; G.order = [];
+  const q = G.questions[G.r];
+  show(`${topbar()}
+    <div class="center">
+      <div class="muted">سؤال الجولة</div>
+      <div class="qcard" style="width:100%">${esc(q.q)}</div>
+      <div class="muted">كل لاعب يكتب إجابته في سرّه ✍️<br>${G.timer?`لديك ${AR(G.timer)} ثانية`:''}</div>
+    </div>
+    <div class="bottom"><button class="btn" onclick="passTo('answer',0)">ابدأ الكتابة</button></div>`);
+}
+function passTo(kind, i) {
+  const isA = kind === 'answer';
+  show(`${topbar()}
+    <div class="center">
+      <div class="big-emoji">📱</div>
+      <div class="muted">${isA ? 'سلّم الجهاز إلى' : 'دور التصويت — سلّم الجهاز إلى'}</div>
+      <div class="pass-name">${teamDot(i)}${esc(pName(i))}</div>
+      <div class="muted">${isA ? 'اتأكد إن محدش بيشوف الشاشة 🤫' : 'اختار أفضل إجابة 🗳️'}</div>
+    </div>
+    <div class="bottom"><button class="btn" onclick="${isA?`answerScreen(${i})`:`voteScreen(${i})`}">أنا ${esc(pName(i))} — جاهز</button></div>`);
+}
+function answerScreen(i) {
+  const q = G.questions[G.r];
+  show(`${topbar()}
+    <div class="qcard small">${esc(q.q)}</div>
+    <div style="font-weight:800;margin:0 4px 8px">${teamDot(i)}${esc(pName(i))} — اكتب إجابتك</div>
+    ${G.timer?`<div class="timer" id="tbar"><div style="width:100%"></div></div><div class="timer-t" id="ttxt">${AR(G.timer)}</div>`:''}
+    <textarea id="ans" maxlength="140" placeholder="اكتب هنا..." oninput="document.getElementById('cnt').textContent=AR(this.value.length)+' / ١٤٠'"></textarea>
+    <div class="counter" id="cnt">٠ / ١٤٠</div>
+    <div class="spacer"></div>
+    <div class="bottom btns">
+      <button class="btn soft" onclick="submitAnswer(${i},true)">تخطي</button>
+      <button class="btn" onclick="submitAnswer(${i},false)">تأكيد</button>
+    </div>`);
+  const ta = document.getElementById('ans'); ta && ta.focus();
+  if (G.timer) {
+    let left = G.timer;
+    timerId = setInterval(() => {
+      left--;
+      const bar = document.getElementById('tbar'), t = document.getElementById('ttxt');
+      if (!bar) return clearTimer();
+      bar.firstElementChild.style.width = (left / G.timer * 100) + '%';
+      t.textContent = AR(Math.max(left,0));
+      if (left <= 10) bar.classList.add('low');
+      if (left <= 0) { clearTimer(); submitAnswer(i, false); }
+    }, 1000);
+  }
+}
+function submitAnswer(i, skip) {
+  const ta = document.getElementById('ans');
+  const text = skip ? '' : (ta ? ta.value.trim() : '');
+  clearTimer();
+  G.answers.push({ pid: i, text, skipped: !text });
+  if (i + 1 < G.players.length) passTo('answer', i + 1);
+  else beginVoting();
+}
+function beginVoting() {
+  const valid = G.answers.filter(a => !a.skipped);
+  if (valid.length < 2) {
+    show(`${topbar()}
+      <div class="center"><div class="big-emoji">😴</div><div class="h2">الإجابات مش كفاية</div>
+      <div class="muted">محتاجين إجابتين على الأقل عشان التصويت.<br>الجولة دي بدون نقاط.</div></div>
+      <div class="bottom"><button class="btn" onclick="nextRound()">${G.r+1<G.rounds?'الجولة التالية':'النتيجة النهائية'}</button></div>`);
+    return;
+  }
+  G.order = shuffle(valid.map((_, k) => k));      // order of valid answers shown to voters
+  G.valid = valid;
+  G.votes = {};
+  passTo('vote', 0);
+}
+let selected = null;
+function voteScreen(i) {
+  selected = null;
+  const q = G.questions[G.r];
+  const opts = G.order.map(k => {
+    const a = G.valid[k]; const own = a.pid === i;
+    return `<button class="opt ${own?'own':''}" ${own?'disabled':`onclick="pick(${k},this)"`}>${esc(a.text)}${own?'<span class="tag">إجابتك</span>':''}</button>`;
+  }).join('');
+  show(`${topbar()}
+    <div class="qcard small">${esc(q.q)}</div>
+    <div style="font-weight:800;margin:0 4px 10px">${teamDot(i)}${esc(pName(i))} — صوّت لأفضل إجابة</div>
+    ${opts}
+    <div class="spacer"></div>
+    <div class="bottom"><button class="btn" id="vbtn" disabled onclick="submitVote(${i})">تأكيد التصويت</button></div>`);
+}
+function pick(k, el) {
+  selected = k;
+  document.querySelectorAll('.opt').forEach(o => o.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('vbtn').disabled = false;
+}
+function submitVote(i) {
+  if (selected === null) return;
+  G.votes[i] = selected;
+  if (i + 1 < G.players.length) passTo('vote', i + 1);
+  else showResults();
+}
+function showResults() {
+  const tally = G.valid.map(() => 0);
+  Object.values(G.votes).forEach(k => tally[k]++);
+  const max = Math.max(...tally);
+  const gained = G.players.map(() => 0);
+  G.valid.forEach((a, k) => {
+    gained[a.pid] += tally[k];
+    if (G.bonus && max > 0 && tally[k] === max) gained[a.pid] += 1;
+  });
+  gained.forEach((g, p) => G.scores[p] += g);
+
+  // save log + history
+  const entry = { q: G.questions[G.r].q, a: G.valid.map((a,k)=>({t:a.text, n:pName(a.pid), v:tally[k]})) };
+  const h = getHist(); h.unshift(entry); saveHist(h);
+
+  const idx = G.valid.map((_,k)=>k).sort((x,y)=>tally[y]-tally[x]);
+  const cards = idx.map(k => {
+    const a = G.valid[k]; const top = max > 0 && tally[k] === max;
+    return `<div class="res ${top?'top':''}"><div class="txt">${esc(a.text)}</div>
+      <div class="meta"><span>${top?'🏆 ':''}${teamDot(a.pid)}${esc(pName(a.pid))}</span><span class="pts">${AR(tally[k])} ${tally[k]===1?'صوت':'أصوات'}${top&&G.bonus?' +١ إضافية':''}</span></div></div>`;
+  }).join('');
+  const skipped = G.answers.filter(a => a.skipped).map(a => esc(pName(a.pid)));
+  show(`${topbar()}
+    <h2 class="h2" style="margin-bottom:12px">نتيجة الجولة</h2>
+    <div class="qcard small">${esc(G.questions[G.r].q)}</div>
+    ${cards}
+    ${skipped.length?`<div class="muted" style="text-align:center;margin-bottom:10px">تخطّى: ${skipped.join('، ')}</div>`:''}
+    <h3 style="margin:12px 4px 8px">الترتيب الحالي</h3>
+    ${scoreboard()}
+    <div class="spacer"></div>
+    <div class="bottom"><button class="btn" onclick="nextRound()">${G.r+1<G.rounds?'الجولة التالية':'النتيجة النهائية'}</button></div>`);
+}
+function scoreboard() {
+  const order = G.players.map((_,i)=>i).sort((a,b)=>G.scores[b]-G.scores[a]);
+  const top = Math.max(...G.scores);
+  return order.map((p,rank)=>`<div class="score ${G.scores[p]===top&&top>0?'first':''}"><div class="rk">${AR(rank+1)}</div><div class="nm">${teamDot(p)}${esc(pName(p))}</div><div class="sc">${AR(G.scores[p])}</div></div>`).join('');
+}
+function teamBoard() {
+  if (!G.teamsOn) return '';
+  const t = [0,0];
+  G.players.forEach((p,i)=>t[p.team]+=G.scores[i]);
+  return `<div class="teamscore"><div class="a">الفريق الأحمر<b>${AR(t[0])}</b></div><div class="b">الفريق الأزرق<b>${AR(t[1])}</b></div></div>`;
+}
+function nextRound() {
+  G.r++;
+  if (G.r < G.rounds) startRound(); else finalScreen();
+}
+function finalScreen() {
+  G.r = G.rounds - 1; // keep topbar-safe
+  const top = Math.max(...G.scores);
+  const winners = G.players.filter((_,i)=>G.scores[i]===top).map(p=>esc(p.name));
+  let tw = '';
+  if (G.teamsOn) {
+    const t = [0,0]; G.players.forEach((p,i)=>t[p.team]+=G.scores[i]);
+    tw = t[0]===t[1] ? 'تعادل بين الفريقين 🤝' : (t[0]>t[1] ? 'الفريق الأحمر يفوز 🔴' : 'الفريق الأزرق يفوز 🔵');
+  }
+  show(`
+    <div class="winner-crown">👑</div>
+    <h2 class="h2">${top>0 ? (winners.length>1 ? 'تعادل بين: ' : 'الفائز: ') + winners.join(' و ') : 'لا فائز هذه المرة'}</h2>
+    <div class="muted" style="text-align:center;margin:6px 0 16px">${tw || 'أفضل إجابات الجلسة 🎉'}</div>
+    ${teamBoard()}
+    ${scoreboard()}
+    <div class="spacer"></div>
+    <div class="bottom btns">
+      <button class="btn ghost" onclick="renderSetup()">الإعدادات</button>
+      <button class="btn" onclick="startGame()">العب مرة تانية</button>
+    </div>`);
+}
+
+renderSetup();
+</script>
+</body>
+</html>
